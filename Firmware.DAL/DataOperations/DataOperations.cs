@@ -1,4 +1,5 @@
 ﻿using Firmware.DAL.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -67,18 +68,38 @@ namespace Firmware.DAL.DataOperations
             }
             return swPackg;
         }
-        public void AddSoftwarePackage(byte[] Swpackage , byte[] Swhelpdoc , @SwPkgUID uniqueidentifier, @SwAddedDate datetime, @SwPkgVersion VARCHAR, @SwPkgDescription NVARCHAR, @SwColorStandardID INT, @AddedDate DATETIME2, @SwVersion INT,
-                                                    @SwFileDetailsUID uniqueidentifier, @SwFileName nvarchar, @SwFileFormat nvarchar, @SwFileSize varchar, @SwFileURL nvarchar, @SwFileUploadDate datetime2, @SwFileChecksum varchar, @SwFileChecksumType varchar, @SwCreatedBy nvarchar,
-                                                    @BlobUID uniqueidentifier, @BlobDescription varchar, @BlobTypeID uniqueidentifier, @MapUID uniqueidentifier)
+        public void AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, Guid SwPkgUID, DateTime SwAddedDate, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, DateTime AddedDate, int SwVersion, Guid SwFileDetailsUID, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, DateTime SwFileUploadDate, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, Guid BlobUID, string BlobDescription, Guid BlobTypeID, Guid MapUID)
         {
             OpenConnection();
-           
+
             // Execute using our connection.
             using (SqlCommand command = new SqlCommand("[Inventory].[usp_AddSoftwarePackage]", _sqlConnection))
             {
                 command.CommandType = CommandType.StoredProcedure;
-                
-                command.Parameters.Add(new SqlParameter {ParameterName = "@Swpackage", SqlDbType = SqlDbType.VarBinary, Value =  });
+
+                command.Parameters.Add(new SqlParameter { ParameterName = "@Swpackage", SqlDbType = SqlDbType.VarBinary, Value = Swpackage });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@Swhelpdoc", SqlDbType = SqlDbType.VarBinary, Value = Swhelpdoc });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwAddedDate", SqlDbType = SqlDbType.DateTime2, Value = DateTime.Now });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgVersion", SqlDbType = SqlDbType.VarChar, Value = SwPkgVersion });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgDescription", SqlDbType = SqlDbType.VarChar, Value = SwPkgDescription });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwColorStandardID", SqlDbType = SqlDbType.Int, Value = SwColorStandardID });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@AddedDate", SqlDbType = SqlDbType.DateTime2, Value = AddedDate });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwVersion", SqlDbType = SqlDbType.Int, Value = SwVersion });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileName", SqlDbType = SqlDbType.VarChar, Value = SwFileName });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileFormat", SqlDbType = SqlDbType.VarChar, Value = SwFileFormat });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileSize", SqlDbType = SqlDbType.VarChar, Value = SwFileSize.ToString() });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileURL", SqlDbType = SqlDbType.VarChar, Value = SwFileURL });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileUploadDate", SqlDbType = SqlDbType.DateTime2, Value = SwFileUploadDate });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileChecksum", SqlDbType = SqlDbType.VarChar, Value = SwFileChecksum });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileChecksumType", SqlDbType = SqlDbType.VarChar, Value = SwFileChecksumType });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@SwCreatedBy", SqlDbType = SqlDbType.VarChar, Value = SwCreatedBy });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@BlobUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@BlobDescription", SqlDbType = SqlDbType.VarChar, Value = BlobDescription });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@BlobTypeID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
+                command.Parameters.Add(new SqlParameter { ParameterName = "@MapUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
+
 
                 command.ExecuteNonQuery();
             }
