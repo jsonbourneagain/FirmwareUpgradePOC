@@ -1,18 +1,18 @@
-﻿using Firmware.IBL;
+﻿using Firmware.DAL.DataOperations;
+using Firmware.IBL;
 using System;
 using System.Collections.Generic;
-using Firmware.DAL.DataOperations;
 
 namespace Firmware.BL
 {
     public class FirmwareRepository : IFirmwareRepository
     {
-        //private FirmwarePOCEntities firmwarePOCEntities;
+        private DataOperations _dataOperations;
 
-        //public FirmwareRepository()
-        //{
-        //    firmwarePOCEntities = new FirmwarePOCEntities();
-        //}
+        public FirmwareRepository()
+        {
+            _dataOperations = new DataOperations();
+        }
 
         public Guid UploadFirmware(byte[] firmwareSwPackg, string firmwareFilename, byte[] helpDoc, string helpDocFileName, string key)
         {
@@ -32,9 +32,11 @@ namespace Firmware.BL
             FirmwareCache.AddOrGetFirmware(tempKey.ToString(), packageFile);
             return tempKey;
         }
-        public bool AddFirmware(string key)
+        public bool AddFirmware(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileFormat, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
         {
+            PackageFile package = FirmwareCache.AddOrGetFirmware(key, new PackageFile()) as PackageFile;
             
+            return _dataOperations.AddSoftwarePackage(package.SoftwarePakage, package.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, package.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription);
         }
 
         public IEnumerable<Model.Models.Firmware> GetAllFirmware()

@@ -1,6 +1,5 @@
 ﻿using Firmware.IBL;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -52,12 +51,12 @@ namespace Firmware.WebApi.Controllers
             return base.Content(HttpStatusCode.OK, id, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [HttpPost, Route("api/AddSoftwarePackage")]
-        public async Task<IHttpActionResult> AddSoftwarePackage(string guid)
+        public async Task<IHttpActionResult> AddSoftwarePackage(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileName, string SwFileFormat, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
         {
-            string key = guid.Trim('\"');
-            
-            var result = _repository.AddFirmware(key);
-            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+            key = key.Trim('\"');
+
+            var result = _repository.AddFirmware(key, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, "bin", SwFileURL, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription);
+            return base.Content(HttpStatusCode.OK, true, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
     }
 }
