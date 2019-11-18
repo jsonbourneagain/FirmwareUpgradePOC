@@ -1,4 +1,5 @@
 ﻿using Firmware.DAL.DataOperations;
+using Firmware.DAL.Models;
 using Firmware.IBL;
 using System;
 using System.Collections.Generic;
@@ -48,13 +49,12 @@ namespace Firmware.BL
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
-        public IEnumerable<Model.Models.Firmware> GetAllFirmware()
+        public IEnumerable<SoftwarePackage> GetAllFirmware()
         {
-            throw new NotImplementedException();
+            return _dataOperations.GetSoftwarePackage();
         }
     }
 }

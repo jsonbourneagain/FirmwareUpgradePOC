@@ -122,11 +122,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Firmware.BL\Firmware.BL.csproj">
-      <Project>{14e89800-e7f1-4fba-928d-6f57c24ad2cf}</Project>
+      <Project>{14E89800-E7F1-4FBA-928D-6F57C24AD2CF}</Project>
       <Name>Firmware.BL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Firmware.IBL\Firmware.IBL.csproj">
-      <Project>{8b37ef99-1a8a-448c-96dd-29cbfd0ea82c}</Project>
+      <Project>{8B37EF99-1A8A-448C-96DD-29CBFD0EA82C}</Project>
       <Name>Firmware.IBL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Firmware.Model\Firmware.Model.csproj">

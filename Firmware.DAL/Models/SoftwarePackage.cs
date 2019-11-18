@@ -2,14 +2,13 @@
 
 namespace Firmware.DAL.Models
 {
-    public class SoftwarePackage
-    {
-        public string SwPkgUID { get; set; }
-        public string SwPkgDescription { get; set; }
-        public string SwPkgVersion { get; set; }
-        public int SwColorStandardID { get; set; }
-        public DateTime AddedDate { get; set; }
-        public string SwVersion { get; set; }
-
-    }
+    //public class SoftwarePackage
+    //{
+    //    public Guid SwPkgUID { get; set; }
+    //    public string SwPkgVersion { get; set; }
+    //    public int SwColorStandardID { get; set; }
+    //    public DateTime SwAddedDate { get; set; }
+    //    public string SwFileName { get; set; }
+    //    public string SwFileSize { get; set; }
+    //}
 }

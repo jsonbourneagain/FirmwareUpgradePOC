@@ -55,5 +55,11 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Firmware.Model\Firmware.Model.csproj">
+      <Project>{b5c367d5-6f22-47f1-85a8-699c36d9e69a}</Project>
+      <Name>Firmware.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

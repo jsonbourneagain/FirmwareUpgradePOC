@@ -26,27 +26,39 @@ namespace Firmware.DAL.DataOperations
         }
         public List<SoftwarePackage> GetSoftwarePackage()
         {
-            OpenConnection();
-            List<SoftwarePackage> inventory = new List<SoftwarePackage>();
-
-            string sql = "select * from ;";
-            using (SqlCommand command = new SqlCommand(sql, _sqlConnection))
+            try
             {
-                command.CommandType = CommandType.Text;
-                SqlDataReader dataReader = command.ExecuteReader(CommandBehavior.CloseConnection);
+                OpenConnection();
+                List<SoftwarePackage> inventory = new List<SoftwarePackage>();
 
-                while (dataReader.Read())
+                using (SqlCommand command = new SqlCommand("Inventory.usp_GetAllSoftwarePackages", _sqlConnection))
                 {
-                    inventory.Add(
-                        new SoftwarePackage
-                        {
+                    command.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader dataReader = command.ExecuteReader(CommandBehavior.CloseConnection);
 
-                        }
-                        );
+                    while (dataReader.Read())
+                    {
+                        inventory.Add(
+                            new SoftwarePackage
+                            {
+
+                            }
+                            );
+                    }
                 }
+
+                return inventory;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                CloseConnection();
             }
 
-            return inventory;
         }
         public SoftwarePackage GetSoftwarePackage(string id)
         {
