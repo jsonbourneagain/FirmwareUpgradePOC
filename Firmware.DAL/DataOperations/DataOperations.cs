@@ -29,37 +29,40 @@ namespace Firmware.DAL.DataOperations
             try
             {
                 OpenConnection();
-                
+
                 List<SoftwarePackage> inventory = new List<SoftwarePackage>();
 
                 using (SqlCommand command = new SqlCommand("Inventory.usp_GetAllSoftwarePackages", _sqlConnection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
+                    SqlParameter swPkgUID = new SqlParameter { ParameterName = "@SwPkgUID", SqlDbType = SqlDbType.UniqueIdentifier };
+                    SqlParameter swPkgVersion = new SqlParameter { ParameterName = "@SwPkgVersion", SqlDbType = SqlDbType.UniqueIdentifier };
+                    SqlParameter swColorStandardID = new SqlParameter { ParameterName = "@SwColorStandardID", SqlDbType = SqlDbType.UniqueIdentifier };
+                    SqlParameter swAddedDate = new SqlParameter { ParameterName = "@SwAddedDate", SqlDbType = SqlDbType.UniqueIdentifier };
+                    SqlParameter swFileName = new SqlParameter { ParameterName = "@SwFileName", SqlDbType = SqlDbType.UniqueIdentifier };
+                    SqlParameter swFileSize = new SqlParameter { ParameterName = "@SwFileSize", SqlDbType = SqlDbType.UniqueIdentifier };
 
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgUID", SqlDbType = SqlDbType.UniqueIdentifier}).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgVersion", SqlDbType = SqlDbType.VarChar}).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwColorStandardID", SqlDbType = SqlDbType.Int}).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwAddedDate", SqlDbType = SqlDbType.DateTime}).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileName", SqlDbType = SqlDbType.NVarChar}).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileSize", SqlDbType = SqlDbType.VarChar}).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(swPkgUID).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(swPkgVersion).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(swColorStandardID).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(swAddedDate).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(swFileName).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(swFileSize).Direction = ParameterDirection.Output;
 
 
                     command.ExecuteNonQuery();
 
-                    while (dataReader.Read())
-                    {
-                        inventory.Add(
-                            new SoftwarePackage
-                            {
-                                SwPkgUID = (Guid)dataReader["SwPkgUID"],
-                                SwPkgVersion = (string)dataReader["SwPkgVersion"],
-                                SwColorStandardID = (int)dataReader["SwColorStandardID"],
-                                SwAddedDate = (DateTime)dataReader["SwAddedDate"],
-                                SwFileName = (string)dataReader["SwFileName"],
-                                SwFileSize = (long)dataReader["SwFileSize"]
-                            }
-                            );
-                    }
+                    inventory.Add(
+                        new SoftwarePackage
+                        {
+                            SwPkgUID = (Guid)swPkgUID.Value,
+                            SwPkgVersion = (string)swPkgVersion.Value,
+                            SwColorStandardID = (int)swColorStandardID.Value,
+                            SwAddedDate = (DateTime)swAddedDate.Value,
+                            SwFileName = (string)swFileName.Value,
+                            SwFileSize = (long)swFileSize.Value
+                        }
+                        );
                 }
 
                 return inventory;
