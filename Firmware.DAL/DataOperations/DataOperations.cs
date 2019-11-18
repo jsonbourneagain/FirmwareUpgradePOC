@@ -41,7 +41,12 @@ namespace Firmware.DAL.DataOperations
                         inventory.Add(
                             new SoftwarePackage
                             {
-
+                                SwPkgUID = (Guid)dataReader["SwPkgUID"],
+                                SwPkgVersion = (string)dataReader["SwPkgVersion"],
+                                SwColorStandardID = (int)dataReader["SwColorStandardID"],
+                                SwAddedDate = (DateTime)dataReader["SwAddedDate"],
+                                SwFileName = (string)dataReader["SwFileName"],
+                                SwFileSize = (long)dataReader["SwFileSize"]
                             }
                             );
                     }
