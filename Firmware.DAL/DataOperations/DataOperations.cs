@@ -99,7 +99,6 @@ namespace Firmware.DAL.DataOperations
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobDescription", SqlDbType = SqlDbType.VarChar, Value = SwPkgDescription });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobTypeID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@MapUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
 
 
                     command.ExecuteNonQuery();

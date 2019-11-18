@@ -51,12 +51,22 @@ namespace Firmware.WebApi.Controllers
             return base.Content(HttpStatusCode.OK, id, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [HttpPost, Route("api/AddSoftwarePackage")]
-        public async Task<IHttpActionResult> AddSoftwarePackage(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileName, string SwFileFormat, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
+        public async Task<IHttpActionResult> AddSoftwarePackage(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
         {
             key = key.Trim('\"');
 
-            var result = _repository.AddFirmware(key, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, "bin", SwFileURL, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription);
+            var result = _repository.AddFirmware(key, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription);
             return base.Content(HttpStatusCode.OK, true, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
+
+        [HttpPost, Route("api/CancelUpload")]
+        public async Task<IHttpActionResult> CancelUpload(string key)
+        {
+            key = key.Trim('\"');
+
+            var result = _repository.DeleteSwPackageFromMemory(key);
+            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+        }
+
     }
 }
