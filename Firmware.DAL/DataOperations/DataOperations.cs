@@ -35,39 +35,29 @@ namespace Firmware.DAL.DataOperations
                 using (SqlCommand command = new SqlCommand("Inventory.usp_GetAllSoftwarePackages", _sqlConnection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    SqlParameter swPkgUID = new SqlParameter { ParameterName = "@SwPkgUID", SqlDbType = SqlDbType.UniqueIdentifier };
-                    SqlParameter swPkgVersion = new SqlParameter { ParameterName = "@SwPkgVersion", SqlDbType = SqlDbType.UniqueIdentifier };
-                    SqlParameter swColorStandardID = new SqlParameter { ParameterName = "@SwColorStandardID", SqlDbType = SqlDbType.UniqueIdentifier };
-                    SqlParameter swAddedDate = new SqlParameter { ParameterName = "@SwAddedDate", SqlDbType = SqlDbType.UniqueIdentifier };
-                    SqlParameter swFileName = new SqlParameter { ParameterName = "@SwFileName", SqlDbType = SqlDbType.UniqueIdentifier };
-                    SqlParameter swFileSize = new SqlParameter { ParameterName = "@SwFileSize", SqlDbType = SqlDbType.UniqueIdentifier };
 
-                    command.Parameters.Add(swPkgUID).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(swPkgVersion).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(swColorStandardID).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(swAddedDate).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(swFileName).Direction = ParameterDirection.Output;
-                    command.Parameters.Add(swFileSize).Direction = ParameterDirection.Output;
-
-
-                    command.ExecuteNonQuery();
-
-                    inventory.Add(
-                        new SoftwarePackage
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
                         {
-                            SwPkgUID = (Guid)swPkgUID.Value,
-                            SwPkgVersion = (string)swPkgVersion.Value,
-                            SwColorStandardID = (int)swColorStandardID.Value,
-                            SwAddedDate = (DateTime)swAddedDate.Value,
-                            SwFileName = (string)swFileName.Value,
-                            SwFileSize = (long)swFileSize.Value
+                            inventory.Add(
+                            new SoftwarePackage
+                            {
+                                SwPkgUID = new Guid(reader["SwPkgUID"].ToString()),
+                                SwPkgVersion = reader["SwPkgVersion"].ToString(),
+                                SwColorStandardID = Convert.ToInt32(reader["SwColorStandardID"]),
+                                SwAddedDate = Convert.ToDateTime(reader["AddedDate"]),
+                                SwFileName = reader["FileName"].ToString(),
+                                SwFileSize = (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f
+                            }
+                            );
                         }
-                        );
+                    }
                 }
 
                 return inventory;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;

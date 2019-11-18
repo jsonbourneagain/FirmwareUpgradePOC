@@ -9,6 +9,6 @@ namespace Firmware.DAL.Models
         public int SwColorStandardID { get; set; }
         public DateTime SwAddedDate { get; set; }
         public string SwFileName { get; set; }
-        public long SwFileSize { get; set; }
+        public float SwFileSize { get; set; }
     }
 }
