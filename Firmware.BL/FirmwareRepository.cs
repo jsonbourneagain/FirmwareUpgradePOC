@@ -52,9 +52,9 @@ namespace Firmware.BL
                 return false;
             }
         }
-        public IEnumerable<SoftwarePackage> GetAllFirmware()
+        public IEnumerable<SoftwarePackage> GetAllSoftwarePackage()
         {
-            return _dataOperations.GetSoftwarePackage();
+            return _dataOperations.GetAllSoftwarePackage();
         }
     }
 }

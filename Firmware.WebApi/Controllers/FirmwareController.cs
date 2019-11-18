@@ -67,6 +67,11 @@ namespace Firmware.WebApi.Controllers
             var result = _repository.DeleteSwPackageFromMemory(key);
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
-
+        [HttpGet, Route("api/GetAllSoftwarePackage")]
+        public async Task<IHttpActionResult> GetAllSoftwarePackage()
+        {
+            var result = _repository.GetAllSoftwarePackage();
+            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+        }
     }
 }

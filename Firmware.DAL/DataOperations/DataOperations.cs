@@ -24,17 +24,27 @@ namespace Firmware.DAL.DataOperations
                 _sqlConnection?.Close();
             }
         }
-        public List<SoftwarePackage> GetSoftwarePackage()
+        public List<SoftwarePackage> GetAllSoftwarePackage()
         {
             try
             {
                 OpenConnection();
+                
                 List<SoftwarePackage> inventory = new List<SoftwarePackage>();
 
                 using (SqlCommand command = new SqlCommand("Inventory.usp_GetAllSoftwarePackages", _sqlConnection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    SqlDataReader dataReader = command.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgUID", SqlDbType = SqlDbType.UniqueIdentifier}).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgVersion", SqlDbType = SqlDbType.VarChar}).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwColorStandardID", SqlDbType = SqlDbType.Int}).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwAddedDate", SqlDbType = SqlDbType.DateTime}).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileName", SqlDbType = SqlDbType.NVarChar}).Direction = ParameterDirection.Output;
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileSize", SqlDbType = SqlDbType.VarChar}).Direction = ParameterDirection.Output;
+
+
+                    command.ExecuteNonQuery();
 
                     while (dataReader.Read())
                     {
