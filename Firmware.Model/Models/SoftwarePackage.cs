@@ -10,5 +10,6 @@ namespace Firmware.DAL.Models
         public DateTime SwAddedDate { get; set; }
         public string SwFileName { get; set; }
         public float SwFileSize { get; set; }
+        public string HelpDocFileName { get; set }
     }
 }

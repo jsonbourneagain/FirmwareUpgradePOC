@@ -52,6 +52,7 @@ namespace Firmware.DAL.DataOperations
                                 SwFileSize = (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f
                             }
                             );
+                            reader.NextResult();
                         }
                     }
                 }
@@ -119,9 +120,7 @@ namespace Firmware.DAL.DataOperations
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwCreatedBy", SqlDbType = SqlDbType.VarChar, Value = DBNull.Value });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobDescription", SqlDbType = SqlDbType.VarChar, Value = SwPkgDescription });
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@BlobTypeID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
 
-                    //Bin => 151C28A2-7B47-4764-85AE-940B3901BA97   PDF => B1CD7C3D - DA88 - 4608 - 834B - 86F388813D8C
                     command.Parameters.Add(new SqlParameter { ParameterName = "@Swhelpdoc", SqlDbType = SqlDbType.VarBinary, Value = Swhelpdoc });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileName", SqlDbType = SqlDbType.VarChar, Value = helDocFileName });
