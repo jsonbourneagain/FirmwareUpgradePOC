@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataOperations\DataOperations.cs" />
+    <Compile Include="Models\ColorStandard.cs" />
     <Compile Include="Models\SoftwarePackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
