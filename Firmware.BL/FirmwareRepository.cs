@@ -37,7 +37,8 @@ namespace Firmware.BL
         {
             PackageFile package = FirmwareCache.AddOrGetFirmware(key, new PackageFile()) as PackageFile;
 
-            return _dataOperations.AddSoftwarePackage(package.SoftwarePakage, package.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, package.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription);
+            return _dataOperations.AddSoftwarePackage(package.SoftwarePakage, package.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, package.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription,
+               package.HelpDocumentFileName, "pdf", package.HelpDocument.Length);
         }
 
         public bool DeleteSwPackageFromMemory(string key)
@@ -52,9 +53,15 @@ namespace Firmware.BL
                 return false;
             }
         }
-        public IEnumerable<SoftwarePackage> GetAllSoftwarePackage()
+        public IEnumerable<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize)
         {
             return _dataOperations.GetAllSoftwarePackage();
+        }
+
+        public bool DeleteSoftwarePackage(Guid packageId)
+        {
+            bool result = _dataOperations.DeleteSoftwarePackage(packageId);
+            return result;
         }
     }
 }

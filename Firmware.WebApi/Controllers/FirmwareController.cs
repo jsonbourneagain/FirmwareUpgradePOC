@@ -1,5 +1,7 @@
 ﻿using Firmware.IBL;
+using Firmware.Model.Models;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -51,11 +53,11 @@ namespace Firmware.WebApi.Controllers
             return base.Content(HttpStatusCode.OK, id, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [HttpPost, Route("api/AddSoftwarePackage")]
-        public async Task<IHttpActionResult> AddSoftwarePackage(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
+        public async Task<IHttpActionResult> AddSoftwarePackage(SoftwarePackageAdd softwarePackage)
         {
-            key = key.Trim('\"');
+            var key = softwarePackage.Key.Trim('\"');
 
-            var result = _repository.AddFirmware(key, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription);
+            var result = _repository.AddFirmware(key, softwarePackage.SwPkgVersion, softwarePackage.SwPkgDescription, softwarePackage.SwColorStandardID, softwarePackage.SwVersion, softwarePackage.SwFileChecksum, softwarePackage.SwFileChecksumType, softwarePackage.SwCreatedBy, softwarePackage.BlobDescription);
             return base.Content(HttpStatusCode.OK, true, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
 
@@ -68,10 +70,32 @@ namespace Firmware.WebApi.Controllers
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [HttpGet, Route("api/GetAllSoftwarePackage")]
-        public async Task<IHttpActionResult> GetAllSoftwarePackage()
+        public async Task<IHttpActionResult> GetAllSoftwarePackage(int pageNo, int pageSize)
         {
-            var result = _repository.GetAllSoftwarePackage();
+            var result = _repository.GetAllSoftwarePackage(pageNo, pageSize);
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+        }
+
+        [HttpDelete, Route("api/DeleteSoftwarePackage")]
+        public async Task<IHttpActionResult> DeleteSoftwarePackage(List<Guid> packageIds)
+        {
+            bool result = false;
+            if (!string.IsNullOrEmpty(packageIds.ToString()))
+            {
+                result = await Task.Run(() => _repository.DeleteSoftwarePackage(packageIds[0]));
+                if (result)
+                {
+                    return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain");
+                }
+                else
+                {
+                    return base.Content(HttpStatusCode.InternalServerError, result, new JsonMediaTypeFormatter(), "text/plain");
+                }
+            }
+            else
+            {
+                return base.Content(HttpStatusCode.BadRequest, result, new JsonMediaTypeFormatter(), "text/plain");
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Firmware.DAL.DataOperations
                 _sqlConnection?.Close();
             }
         }
-        public List<SoftwarePackage> GetAllSoftwarePackage()
+        public List<SoftwarePackage> GetAllSoftwarePackage(int pageNo = 1, int pageSize = 10)
         {
             try
             {
@@ -35,7 +35,8 @@ namespace Firmware.DAL.DataOperations
                 using (SqlCommand command = new SqlCommand("Inventory.usp_GetAllSoftwarePackages", _sqlConnection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@PageNo", SqlDbType = SqlDbType.Int, Value = pageNo });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@PageSize", SqlDbType = SqlDbType.Int, Value = pageSize });
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -88,7 +89,7 @@ namespace Firmware.DAL.DataOperations
             }
             return swPackg;
         }
-        public bool AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
+        public bool AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription, string helDocFileName, string helpDocFileFormat, long helpDocFileSize)
         {
             try
             {
@@ -100,7 +101,7 @@ namespace Firmware.DAL.DataOperations
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.Add(new SqlParameter { ParameterName = "@Swpackage", SqlDbType = SqlDbType.VarBinary, Value = Swpackage });
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@Swhelpdoc", SqlDbType = SqlDbType.VarBinary, Value = Swhelpdoc });
+                    
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwAddedDate", SqlDbType = SqlDbType.DateTime2, Value = DateTime.Now });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgVersion", SqlDbType = SqlDbType.VarChar, Value = SwPkgVersion });
@@ -120,6 +121,13 @@ namespace Firmware.DAL.DataOperations
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobDescription", SqlDbType = SqlDbType.VarChar, Value = SwPkgDescription });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobTypeID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
 
+                    //Bin => 151C28A2-7B47-4764-85AE-940B3901BA97   PDF => B1CD7C3D - DA88 - 4608 - 834B - 86F388813D8C
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@Swhelpdoc", SqlDbType = SqlDbType.VarBinary, Value = Swhelpdoc });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileName", SqlDbType = SqlDbType.VarChar, Value = helDocFileName });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileFormat", SqlDbType = SqlDbType.VarChar, Value = helpDocFileFormat });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileSize", SqlDbType = SqlDbType.VarChar, Value = helpDocFileSize .ToString()});
+
 
                     command.ExecuteNonQuery();
                 }
@@ -135,6 +143,30 @@ namespace Firmware.DAL.DataOperations
                 CloseConnection();
             }
             return true;
+        }
+
+        public bool DeleteSoftwarePackage(Guid packageId)
+        {
+            OpenConnection();
+            try
+            {
+                SqlCommand cmd = new SqlCommand("DeleteFirmware", _sqlConnection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@PackageId", packageId);
+                var ret = cmd.ExecuteNonQuery();
+                if (ret > 0)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;  // return error message
+            }
+            finally
+            {
+                CloseConnection();
+            }
         }
     }
 }
