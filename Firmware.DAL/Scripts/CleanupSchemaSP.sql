@@ -9,7 +9,7 @@ AS
   Author : Lavakesh Pandey
   Date:    12-11-2019
   
-  Description: It drop all the objects in a schema and then the schema itself
+  Description: It drops all the objects in a schema and then the schema itself
   
   Limitations:
    
