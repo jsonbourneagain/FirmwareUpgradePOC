@@ -25,7 +25,7 @@ namespace Firmware.WebApi.Controllers
         public async Task<IHttpActionResult> UploadSoftwarePackage(string guid)
         {
             string key = guid.Trim('\"');
-            var context = HttpContext.Current.Request.Files.Count;
+            var count = HttpContext.Current.Request.Files.Count;
             var beforeUpload = GC.GetTotalMemory(false);
             string id = string.Empty;
             if (!Request.Content.IsMimeMultipartContent())
@@ -45,9 +45,12 @@ namespace Firmware.WebApi.Controllers
             swPackgFilename = swPackgfile.Headers.ContentDisposition.FileName.Trim('\"');
             swPackgBuffer = await swPackgfile.ReadAsByteArrayAsync();
 
-            var helpDocFile = provider.Contents[1];
-            helpDocFilename = helpDocFile.Headers.ContentDisposition.FileName.Trim('\"');
-            helpDocBuffer = await helpDocFile.ReadAsByteArrayAsync();
+            if (count > 1)
+            {
+                var helpDocFile = provider.Contents[1];
+                helpDocFilename = helpDocFile.Headers.ContentDisposition.FileName.Trim('\"');
+                helpDocBuffer = await helpDocFile.ReadAsByteArrayAsync();
+            }
 
             id = _repository.UploadFirmware(swPackgBuffer, swPackgFilename, helpDocBuffer, helpDocFilename, key).ToString();
             return base.Content(HttpStatusCode.OK, id, new JsonMediaTypeFormatter(), "text/plain"); ;
