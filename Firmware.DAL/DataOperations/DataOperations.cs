@@ -52,7 +52,7 @@ namespace Firmware.DAL.DataOperations
                                 SwFileSize = (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f
                             }
                             );
-                            reader.NextResult();
+                            reader.Read();
                         }
                     }
                 }
