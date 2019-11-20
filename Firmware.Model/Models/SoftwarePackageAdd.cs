@@ -7,8 +7,6 @@ namespace Firmware.Model.Models
         public string Key { get; set; }
         public Guid SwPkgUID { get; set; }
 
-        public int SwVersion { get; set; }
-
         public int SwColorStandardID { get; set; }
 
         public DateTime SwAddedDate { get; set; }

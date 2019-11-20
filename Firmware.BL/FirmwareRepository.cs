@@ -33,11 +33,11 @@ namespace Firmware.BL
             FirmwareCache.AddOrGetFirmware(tempKey.ToString(), packageFile);
             return tempKey;
         }
-        public bool AddFirmware(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, int SwVersion, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
+        public bool AddFirmware(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription)
         {
             PackageFile package = FirmwareCache.AddOrGetFirmware(key, new PackageFile()) as PackageFile;
 
-            return _dataOperations.AddSoftwarePackage(package.SoftwarePakage, package.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, SwVersion, package.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription,
+            return _dataOperations.AddSoftwarePackage(package.SoftwarePakage, package.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, package.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription,
                package.HelpDocumentFileName, "pdf", package.HelpDocument.Length);
         }
 
