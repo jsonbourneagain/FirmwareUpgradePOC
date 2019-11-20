@@ -11,7 +11,8 @@ namespace Firmware.WebApi
         {
             // Web API configuration and services
 
-            // Web API routes
+            // Web API 
+            config.EnableCors();
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
