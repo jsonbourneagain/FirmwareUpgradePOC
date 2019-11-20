@@ -12,13 +12,13 @@ AS BEGIN
 
 	BEGIN TRANSACTION
 
-	SELECT SWPKG.SwPkgID, SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, FD.FileName, FD.FileSize
+	SELECT SWPKG.SwPkgID, SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, FD.FileName, FD.FileSize, FD.FileFormat
 	  FROM Inventory.SoftwarePackage AS SWPKG
 	  INNER JOIN 
 	  Inventory.FileDetails AS FD 
 	  ON SWPKG.SwPkgUID = FD.SwPkgUID
 
-	  WHERE SWPKG.SwPkgID > @startPos AND SWPKG.SwPkgID < @endPos
+	  WHERE SWPKG.SwPkgID > @startPos AND SWPKG.SwPkgID < @endPos AND FD.FileFormat = 'bin'
 
 	COMMIT
 END
