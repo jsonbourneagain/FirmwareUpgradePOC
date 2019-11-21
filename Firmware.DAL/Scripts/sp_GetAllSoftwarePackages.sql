@@ -10,7 +10,7 @@ AS BEGIN
 	  INNER JOIN 
 	  Inventory.FileDetails AS FD 
 	  ON SWPKG.SwPkgUID = FD.SwPkgUID
-	  WHERE FD.FileFormat = 'bin'
+	  WHERE FD.FileFormat = 'bin' AND SWPKG.IsDeleted = 0
 	  ORDER BY SWPKG.AddedDate desc 
       OFFSET @PageSize * (@PageNo - 1) ROWS
       FETCH NEXT @PageSize ROWS ONLY; 
