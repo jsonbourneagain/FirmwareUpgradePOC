@@ -50,13 +50,38 @@ namespace Firmware.DAL.DataOperations
                                 SwColorStandardID = ((ColorStandard)Convert.ToInt32(reader["SwColorStandardID"])).ToString(),
                                 SwAddedDate = Convert.ToDateTime(reader["AddedDate"]),
                                 SwFileName = reader["FileName"].ToString(),
-                                SwFileSize = (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f,
+                                SwFileSize = String.IsNullOrEmpty(reader["FileSize"].ToString()) ? 0 : (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f,
                                 CameraModels = new List<CameraModelName> { new CameraModelName { ModelName = "ABCD" }, new CameraModelName { ModelName = "EFGH" } }
                             }
                             );
-                            reader.Read();
                         }
                     }
+                }
+
+                FillInHelpDocFileNames(ref inventory);
+
+                void FillInHelpDocFileNames(ref List<SoftwarePackage> softwarePackages)
+                {
+                    Dictionary<Guid, string> keyValuePairs = new Dictionary<Guid, string>();
+
+                    using (SqlCommand commandH = new SqlCommand("Inventory.usp_GetHelpDocFileNames", _sqlConnection))
+                    {
+                        commandH.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader reader = commandH.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                keyValuePairs.Add(new Guid(reader["SwPkgUID"].ToString()), reader["FileName"].ToString());
+                            }
+                        }
+                    }
+                    inventory.ForEach(i =>
+                    {
+                        if (keyValuePairs.ContainsKey(i.SwPkgUID))
+                        {
+                            i.HelpDocFileName = keyValuePairs[i.SwPkgUID];
+                        }
+                    });
                 }
 
                 return inventory;
@@ -92,7 +117,7 @@ namespace Firmware.DAL.DataOperations
             }
             return swPackg;
         }
-        public bool AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription, string helDocFileName, string helpDocFileFormat, long helpDocFileSize)
+        public bool AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription, string helDocFileName, string helpDocFileFormat, long? helpDocFileSize)
         {
             try
             {
@@ -122,7 +147,7 @@ namespace Firmware.DAL.DataOperations
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@BlobDescription", SqlDbType = SqlDbType.VarChar, Value = SwPkgDescription });
 
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@Swhelpdoc", SqlDbType = SqlDbType.VarBinary, Value = Swhelpdoc });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@Swhelpdoc", SqlDbType = SqlDbType.VarBinary, Value = Swhelpdoc != null ? Swhelpdoc : new byte[0] });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileName", SqlDbType = SqlDbType.VarChar, Value = helDocFileName });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileFormat", SqlDbType = SqlDbType.VarChar, Value = helpDocFileFormat });
@@ -168,5 +193,7 @@ namespace Firmware.DAL.DataOperations
                 CloseConnection();
             }
         }
+
+        //private void FillInHelpDocFileName(ref )
     }
 }

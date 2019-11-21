@@ -37,8 +37,8 @@ namespace Firmware.BL
         {
             PackageFile package = FirmwareCache.AddOrGetFirmware(key, new PackageFile()) as PackageFile;
 
-            return _dataOperations.AddSoftwarePackage(package.SoftwarePakage, package.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, package.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription,
-               package.HelpDocumentFileName, "pdf", package.HelpDocument.Length);
+            return _dataOperations.AddSoftwarePackage(package?.SoftwarePakage, package?.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, package?.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, BlobDescription,
+               package?.HelpDocumentFileName, "pdf", package?.HelpDocument?.Length);
         }
 
         public bool DeleteSwPackageFromMemory(string key)
