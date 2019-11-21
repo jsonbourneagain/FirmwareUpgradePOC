@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Scripts\CheckExistingFirmware.sql" />
     <Content Include="Scripts\CleanupSchemaSP.sql" />
     <Content Include="Scripts\InventorySchema-v5.publish.sql" />
     <Content Include="Scripts\sp_AddSoftwarePackage.sql" />

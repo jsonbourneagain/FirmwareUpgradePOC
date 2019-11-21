@@ -195,3 +195,4 @@ INSERT INTO [Inventory].[BlobTypes]
            ,[FileFormat])
      VALUES
            ('B1CD7C3D-DA88-4608-834B-86F388813D8C', 'PDF', 2)
+
