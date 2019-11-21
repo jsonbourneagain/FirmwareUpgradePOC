@@ -55,7 +55,7 @@ namespace Firmware.BL
         }
         public IEnumerable<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize)
         {
-            return _dataOperations.GetAllSoftwarePackage();
+            return _dataOperations.GetAllSoftwarePackage(pageNo, pageSize);
         }
 
         public bool DeleteSoftwarePackage(Guid packageId)

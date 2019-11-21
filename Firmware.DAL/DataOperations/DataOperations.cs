@@ -24,7 +24,7 @@ namespace Firmware.DAL.DataOperations
                 _sqlConnection?.Close();
             }
         }
-        public List<SoftwarePackage> GetAllSoftwarePackage(int pageNo = 1, int pageSize = 10)
+        public List<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize)
         {
             try
             {
@@ -102,13 +102,12 @@ namespace Firmware.DAL.DataOperations
                     command.CommandType = CommandType.StoredProcedure;
 
                     command.Parameters.Add(new SqlParameter { ParameterName = "@Swpackage", SqlDbType = SqlDbType.VarBinary, Value = Swpackage });
-                    
+
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwAddedDate", SqlDbType = SqlDbType.DateTime2, Value = DateTime.Now });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgVersion", SqlDbType = SqlDbType.VarChar, Value = SwPkgVersion });
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgDescription", SqlDbType = SqlDbType.VarChar, Value = DBNull.Value});
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwPkgDescription", SqlDbType = SqlDbType.VarChar, Value = DBNull.Value });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwColorStandardID", SqlDbType = SqlDbType.Int, Value = SwColorStandardID });
-                    //command.Parameters.Add(new SqlParameter { ParameterName = "@SwVersion", SqlDbType = SqlDbType.Int, Value = SwVersion });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileName", SqlDbType = SqlDbType.VarChar, Value = SwFileName });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileFormat", SqlDbType = SqlDbType.VarChar, Value = SwFileFormat });
@@ -125,7 +124,7 @@ namespace Firmware.DAL.DataOperations
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileName", SqlDbType = SqlDbType.VarChar, Value = helDocFileName });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileFormat", SqlDbType = SqlDbType.VarChar, Value = helpDocFileFormat });
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileSize", SqlDbType = SqlDbType.VarChar, Value = helpDocFileSize .ToString()});
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileSize", SqlDbType = SqlDbType.VarChar, Value = helpDocFileSize.ToString() });
 
 
                     command.ExecuteNonQuery();
