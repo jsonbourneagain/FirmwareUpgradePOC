@@ -5,7 +5,7 @@ AS BEGIN
 	SET XACT_ABORT ON
 
 	
-	SELECT SWPKG.SwPkgID, SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, FD.FileName, FD.FileSize, FD.FileFormat
+	SELECT SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, FD.FileName, FD.FileSize, FD.FileFormat
 	  FROM Inventory.SoftwarePackage AS SWPKG
 	  INNER JOIN 
 	  Inventory.FileDetails AS FD 
