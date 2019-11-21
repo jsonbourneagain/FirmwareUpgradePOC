@@ -1,4 +1,5 @@
 ﻿using Firmware.DAL.Models;
+using Firmware.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -50,7 +51,7 @@ namespace Firmware.DAL.DataOperations
                                 SwAddedDate = Convert.ToDateTime(reader["AddedDate"]),
                                 SwFileName = reader["FileName"].ToString(),
                                 SwFileSize = (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f,
-                                CameraModels = new List<string> { "ABCDEF", "GHIJKL", "MNOPQ" }
+                                CameraModels = new List<CameraModelName> { new CameraModelName { ModelName = "ABCD" }, new CameraModelName { ModelName = "EFGH" } }
                             }
                             );
                             reader.Read();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Firmware.Model.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Firmware.DAL.Models
@@ -12,6 +13,6 @@ namespace Firmware.DAL.Models
         public string SwFileName { get; set; }
         public float SwFileSize { get; set; }
         public string HelpDocFileName { get; set; }
-        public List<string> CameraModels { get; set; } = new List<string>();
+        public List<CameraModelName> CameraModels { get; set; } = new List<CameraModelName>();
     }
 }
