@@ -49,7 +49,8 @@ namespace Firmware.DAL.DataOperations
                                 SwColorStandardID = ((ColorStandard)Convert.ToInt32(reader["SwColorStandardID"])).ToString(),
                                 SwAddedDate = Convert.ToDateTime(reader["AddedDate"]),
                                 SwFileName = reader["FileName"].ToString(),
-                                SwFileSize = (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f
+                                SwFileSize = (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f,
+                                CameraModels = new List<string> { "ABCDEF", "GHIJKL", "MNOPQ" }
                             }
                             );
                             reader.Read();
