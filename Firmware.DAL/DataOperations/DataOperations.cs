@@ -2,9 +2,12 @@
 using Firmware.Model.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Reflection;
 
 namespace Firmware.DAL.DataOperations
 {
@@ -42,12 +45,18 @@ namespace Firmware.DAL.DataOperations
                     {
                         while (reader.Read())
                         {
+                            ColorStandard colorStandard = ((ColorStandard)Convert.ToInt32(reader["SwColorStandardID"]));
+
                             inventory.Add(
                             new SoftwarePackage
                             {
                                 SwPkgUID = new Guid(reader["SwPkgUID"].ToString()),
                                 SwPkgVersion = reader["SwPkgVersion"].ToString(),
-                                SwColorStandardID = ((ColorStandard)Convert.ToInt32(reader["SwColorStandardID"])).ToString(),
+                                SwColorStandardID = colorStandard.GetType()
+                                                        .GetMember(colorStandard.ToString())
+                                                        .First()
+                                                        .GetCustomAttribute<DisplayAttribute>()
+                                                        .GetName(),
                                 SwAddedDate = Convert.ToDateTime(reader["AddedDate"]),
                                 SwFileName = reader["FileName"].ToString(),
                                 SwFileSize = String.IsNullOrEmpty(reader["FileSize"].ToString()) ? 0 : (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f,
@@ -119,6 +128,7 @@ namespace Firmware.DAL.DataOperations
         }
         public bool AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription, string helDocFileName, string helpDocFileFormat, long? helpDocFileSize)
         {
+            bool result = true;
             try
             {
                 OpenConnection();
@@ -160,14 +170,13 @@ namespace Firmware.DAL.DataOperations
             catch (Exception ex)
             {
                 // Log it to the log file.
-
-                return false;
+                result = false; ;
             }
             finally
             {
                 CloseConnection();
             }
-            return true;
+            return result;
         }
 
         public bool DeleteSoftwarePackage(Guid packageId)
@@ -193,7 +202,5 @@ namespace Firmware.DAL.DataOperations
                 CloseConnection();
             }
         }
-
-        //private void FillInHelpDocFileName(ref )
     }
 }
