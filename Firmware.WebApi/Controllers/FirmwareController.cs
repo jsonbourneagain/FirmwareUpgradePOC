@@ -36,21 +36,39 @@ namespace Firmware.WebApi.Controllers
             var provider = new MultipartMemoryStreamProvider();
             await Request.Content.ReadAsMultipartAsync(provider);
 
-            byte[] swPackgBuffer = null;
-            byte[] helpDocBuffer = null;
+            byte[] fristBuffer = null, swPackgBuffer = null;
+            byte[] secondBuffer = null, helpDocBuffer = null;
 
-            string swPackgFilename = string.Empty;
-            string helpDocFilename = string.Empty;
+            string firstFileName = string.Empty, swPackgFilename = string.Empty;
+            string secondFileName = string.Empty, helpDocFilename = string.Empty;
 
-            var swPackgfile = provider.Contents[0];
-            swPackgFilename = swPackgfile.Headers.ContentDisposition.FileName.Trim('\"');
-            swPackgBuffer = await swPackgfile.ReadAsByteArrayAsync();
+            var firstFile = provider.Contents[0];
+            firstFileName = firstFile.Headers.ContentDisposition.FileName.Trim('\"');
+            fristBuffer = await firstFile.ReadAsByteArrayAsync();
 
             if (count > 1)
             {
-                var helpDocFile = provider.Contents[1];
-                helpDocFilename = helpDocFile.Headers.ContentDisposition.FileName.Trim('\"');
-                helpDocBuffer = await helpDocFile.ReadAsByteArrayAsync();
+                var secondFile = provider.Contents[1];
+                secondFileName = secondFile.Headers.ContentDisposition.FileName.Trim('\"');
+                secondBuffer = await secondFile.ReadAsByteArrayAsync();
+            }
+
+            var arr = firstFileName.Split('.');
+            var extension = arr[arr.Length - 1];
+
+            if (extension == "bin" || extension == "pkg")
+            {
+                swPackgBuffer = fristBuffer;
+                swPackgFilename = firstFileName;
+                helpDocBuffer = secondBuffer;
+                helpDocFilename = secondFileName;
+            }
+            else if (extension == "pdf" || extension == "doc" || extension == "docx")
+            {
+                swPackgBuffer = secondBuffer;
+                swPackgFilename = secondFileName;
+                helpDocBuffer = fristBuffer;
+                helpDocFilename = firstFileName;
             }
 
             id = _repository.UploadFirmware(swPackgBuffer, swPackgFilename, helpDocBuffer, helpDocFilename, key).ToString();
