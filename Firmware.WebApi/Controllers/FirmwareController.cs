@@ -121,5 +121,12 @@ namespace Firmware.WebApi.Controllers
                 return base.Content(HttpStatusCode.BadRequest, result, new JsonMediaTypeFormatter(), "text/plain");
             }
         }
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet, Route("api/GetModels")]
+        public async Task<IHttpActionResult> GetModels()
+        {
+            List<string> models = new List<string> { "Model1", "Model2", "Model3" };
+            return base.Content(HttpStatusCode.OK, models, new JsonMediaTypeFormatter(), "text/plain"); ;
+        }
     }
 }
