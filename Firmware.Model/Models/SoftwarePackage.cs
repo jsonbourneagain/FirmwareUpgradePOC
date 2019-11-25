@@ -14,5 +14,6 @@ namespace Firmware.DAL.Models
         public float SwFileSize { get; set; }
         public string HelpDocFileName { get; set; }
         public List<CameraModelName> CameraModels { get; set; } = new List<CameraModelName>();
+        public int TotalRecords { get; set; }
     }
 }

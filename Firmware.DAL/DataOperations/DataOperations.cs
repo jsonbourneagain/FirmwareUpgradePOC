@@ -35,6 +35,7 @@ namespace Firmware.DAL.DataOperations
                 OpenConnection();
 
                 List<SoftwarePackage> inventory = new List<SoftwarePackage>();
+                int totalRecs = 0;
 
                 using (SqlCommand command = new SqlCommand("Inventory.usp_GetAllSoftwarePackages", _sqlConnection))
                 {
@@ -64,33 +65,29 @@ namespace Firmware.DAL.DataOperations
                             }
                             );
                         }
-                    }
-                }
 
-                FillInHelpDocFileNames(ref inventory);
-
-                void FillInHelpDocFileNames(ref List<SoftwarePackage> softwarePackages)
-                {
-                    Dictionary<Guid, string> keyValuePairs = new Dictionary<Guid, string>();
-
-                    using (SqlCommand commandH = new SqlCommand("Inventory.usp_GetHelpDocFileNames", _sqlConnection))
-                    {
-                        commandH.CommandType = CommandType.StoredProcedure;
-                        using (SqlDataReader reader = commandH.ExecuteReader())
+                        reader.NextResult();
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            totalRecs = Convert.ToInt32(reader["TotalRecords"]);
+                        }
+
+                        reader.NextResult();
+
+                        Dictionary<Guid, string> keyValuePairs = new Dictionary<Guid, string>();
+                        while (reader.Read())
+                        {
+                            keyValuePairs.Add(new Guid(reader["SwPkgUID"].ToString()), reader["FileName"].ToString());
+                        }
+                        inventory.ForEach(i =>
+                        {
+                            if (keyValuePairs.ContainsKey(i.SwPkgUID))
                             {
-                                keyValuePairs.Add(new Guid(reader["SwPkgUID"].ToString()), reader["FileName"].ToString());
+                                i.HelpDocFileName = keyValuePairs[i.SwPkgUID];
+                                i.TotalRecords = totalRecs;
                             }
-                        }
+                        });
                     }
-                    inventory.ForEach(i =>
-                    {
-                        if (keyValuePairs.ContainsKey(i.SwPkgUID))
-                        {
-                            i.HelpDocFileName = keyValuePairs[i.SwPkgUID];
-                        }
-                    });
                 }
 
                 return inventory;

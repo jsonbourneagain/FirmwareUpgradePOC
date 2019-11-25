@@ -13,6 +13,20 @@ AS BEGIN
 	  WHERE FD.FileFormat = 'bin' AND SWPKG.IsDeleted = 0
 	  ORDER BY SWPKG.AddedDate desc 
       OFFSET @PageSize * (@PageNo - 1) ROWS
-      FETCH NEXT @PageSize ROWS ONLY; 
+      FETCH NEXT @PageSize ROWS ONLY;
+
+	  SELECT COUNT(SWPKG.SwPkgUID) AS TotalRecords
+	  FROM Inventory.SoftwarePackage AS SWPKG
+	  INNER JOIN 
+	  Inventory.FileDetails AS FD 
+	  ON SWPKG.SwPkgUID = FD.SwPkgUID
+	  WHERE FD.FileFormat = 'bin' AND SWPKG.IsDeleted = 0
+
+	  SELECT SWPKG.SwPkgUID, FD.FileName
+	  FROM Inventory.SoftwarePackage AS SWPKG
+	  INNER JOIN 
+	  Inventory.FileDetails AS FD 
+	  ON SWPKG.SwPkgUID = FD.SwPkgUID 
+	  WHERE FD.FileFormat = 'pdf'
 
 END
