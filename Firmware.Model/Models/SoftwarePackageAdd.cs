@@ -30,4 +30,9 @@ namespace Firmware.Model.Models
         public string DeviceType { get; set; }
         public string Manufacturer { get; set; }
     }
+    public class DeleteSwPackageModel
+    {
+        public List<Guid> PackageIds { get; set; }
+        public bool DeleteAll { get; set; }
+    }
 }

@@ -179,21 +179,24 @@ namespace Firmware.DAL.DataOperations
             return result;
         }
 
-        public bool DeleteSoftwarePackage(Guid packageId)
+        public bool DeleteSoftwarePackage(List<Guid> packageIds, bool deleteAll)
         {
-            OpenConnection();
+
             try
             {
-                SqlCommand cmd = new SqlCommand("DeleteFirmware", _sqlConnection);
+                OpenConnection();
+
+                SqlCommand cmd = new SqlCommand("Inventory.usp_DeleteFirmware", _sqlConnection);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@PackageId", packageId);
-                var ret = cmd.ExecuteNonQuery();
-                if (ret > 0)
-                    return true;
-                else
-                    return false;
+
+                cmd.Parameters.Add(new SqlParameter { ParameterName = "@PackageIds", SqlDbType = SqlDbType.Structured, TypeName = "Inventory.PkgUidList", Value = GetDataTableFromList(packageIds) });
+                cmd.Parameters.AddWithValue("@DeleteAll", deleteAll ? 1 : 0);
+
+                cmd.ExecuteNonQuery();
+
+                return true;
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 return false;  // return error message
             }
@@ -201,6 +204,16 @@ namespace Firmware.DAL.DataOperations
             {
                 CloseConnection();
             }
+        }
+        private DataTable GetDataTableFromList(List<Guid> guids)
+        {
+            DataTable table = new DataTable();
+            table.Columns.Add("ID", typeof(Guid));
+            foreach (Guid id in guids)
+            {
+                table.Rows.Add(id);
+            }
+            return table;
         }
     }
 }

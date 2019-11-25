@@ -39,8 +39,8 @@ CREATE TABLE [Inventory].[SoftwarePackage] (
     [SwPkgUID]          UNIQUEIDENTIFIER NOT NULL,
     [SwPkgDescription]  NVARCHAR (500)   NULL,
     [SwPkgVersion]      VARCHAR (100)    NULL,
-	[Manufacturer]      VARCHAR (50)    NULL,
-	[DeviceType]      VARCHAR (50)    NULL,
+	[Manufacturer]      VARCHAR (50)    NOT NULL,
+	[DeviceType]      VARCHAR (50)    NOT NULL,
     [SwColorStandardID]	INT              NULL,  -- Sw type => NTSC or PAL?
     [AddedDate]         DATETIME2 (3)    NOT NULL, 
     [SwVersion]			INT              NULL,  -- Sw Version 	

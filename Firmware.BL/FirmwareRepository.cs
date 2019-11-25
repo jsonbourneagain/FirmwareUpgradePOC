@@ -58,9 +58,9 @@ namespace Firmware.BL
             return _dataOperations.GetAllSoftwarePackage(pageNo, pageSize);
         }
 
-        public bool DeleteSoftwarePackage(Guid packageId)
+        public bool DeleteSoftwarePackage(List<Guid> packageIds, bool deleteAll)
         {
-            bool result = _dataOperations.DeleteSoftwarePackage(packageId);
+            bool result = _dataOperations.DeleteSoftwarePackage(packageIds, deleteAll);
             return result;
         }
     }

@@ -100,13 +100,14 @@ namespace Firmware.WebApi.Controllers
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
-        [HttpDelete, Route("api/DeleteSoftwarePackage")]
-        public async Task<IHttpActionResult> DeleteSoftwarePackage(List<Guid> packageIds)
+        [HttpPost, Route("api/DeleteSoftwarePackage")]
+        public async Task<IHttpActionResult> DeleteSoftwarePackage(DeleteSwPackageModel swPackageModel)
         {
             bool result = false;
-            if (!string.IsNullOrEmpty(packageIds.ToString()))
+
+            if (swPackageModel != null)
             {
-                result = await Task.Run(() => _repository.DeleteSoftwarePackage(packageIds[0]));
+                result = await Task.Run(() => _repository.DeleteSoftwarePackage(swPackageModel.PackageIds, swPackageModel.DeleteAll));
                 if (result)
                 {
                     return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain");
@@ -121,6 +122,7 @@ namespace Firmware.WebApi.Controllers
                 return base.Content(HttpStatusCode.BadRequest, result, new JsonMediaTypeFormatter(), "text/plain");
             }
         }
+
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet, Route("api/GetModels")]
         public async Task<IHttpActionResult> GetModels()

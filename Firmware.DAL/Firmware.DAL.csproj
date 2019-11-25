@@ -69,6 +69,7 @@
     <Content Include="Scripts\GeHelpDocFileNames.sql" />
     <Content Include="Scripts\InventorySchema-v5.publish.sql" />
     <Content Include="Scripts\sp_AddSoftwarePackage.sql" />
+    <Content Include="Scripts\sp_DeleteFirmware.sql" />
     <Content Include="Scripts\sp_GetAllSoftwarePackages.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

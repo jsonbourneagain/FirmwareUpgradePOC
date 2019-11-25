@@ -10,6 +10,6 @@ namespace Firmware.IBL
         System.Guid UploadFirmware(byte[] firmwareSwPackg, string firmwareFilename, byte[] helpDoc, string helpDocFileName, string key);
         bool AddFirmware(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription);
         bool DeleteSwPackageFromMemory(string key);
-        bool DeleteSoftwarePackage(Guid packageId);
+        bool DeleteSoftwarePackage(List<Guid> packageIds, bool deleteAll);
     }
 }
