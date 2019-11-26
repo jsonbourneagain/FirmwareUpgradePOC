@@ -123,7 +123,7 @@ namespace Firmware.DAL.DataOperations
             }
             return swPackg;
         }
-        public bool AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string BlobDescription, string helDocFileName, string helpDocFileFormat, long? helpDocFileSize)
+        public bool AddSoftwarePackage(byte[] Swpackage, byte[] Swhelpdoc, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileName, string SwFileFormat, long SwFileSize, string SwFileURL, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string SwManufacturer, string SwDeviceType, List<string> SupportedModels, string BlobDescription, string helDocFileName, string helpDocFileFormat, long? helpDocFileSize)
         {
             bool result = true;
             try
@@ -144,6 +144,11 @@ namespace Firmware.DAL.DataOperations
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwColorStandardID", SqlDbType = SqlDbType.Int, Value = SwColorStandardID });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileName", SqlDbType = SqlDbType.VarChar, Value = SwFileName });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwModels", SqlDbType = SqlDbType.VarChar, Value = ConvertListToCommaSepartedString(SupportedModels) });
+
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwManufacturer", SqlDbType = SqlDbType.VarChar, Value = SwManufacturer });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SwDeviceType", SqlDbType = SqlDbType.VarChar, Value = SwDeviceType });
+
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileFormat", SqlDbType = SqlDbType.VarChar, Value = SwFileFormat });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileSize", SqlDbType = SqlDbType.VarChar, Value = SwFileSize.ToString() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@SwFileURL", SqlDbType = SqlDbType.VarChar, Value = DBNull.Value });
@@ -211,6 +216,10 @@ namespace Firmware.DAL.DataOperations
                 table.Rows.Add(id);
             }
             return table;
+        }
+        private string ConvertListToCommaSepartedString(List<string> lstStrings)
+        {
+            return String.Join(",", lstStrings);
         }
     }
 }

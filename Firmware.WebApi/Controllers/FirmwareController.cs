@@ -80,7 +80,7 @@ namespace Firmware.WebApi.Controllers
         {
             var key = softwarePackage.Key.Trim('\"');
 
-            var result = _repository.AddFirmware(key, softwarePackage.SwPkgVersion, softwarePackage.SwPkgDescription, softwarePackage.SwColorStandardID, softwarePackage.SwFileChecksum, softwarePackage.SwFileChecksumType, softwarePackage.SwCreatedBy, softwarePackage.BlobDescription);
+            var result = _repository.AddFirmware(key, softwarePackage.SwPkgVersion, softwarePackage.SwPkgDescription, softwarePackage.SwColorStandardID, softwarePackage.SwFileChecksum, softwarePackage.SwFileChecksumType, softwarePackage.SwCreatedBy, softwarePackage.Manufacturer, softwarePackage.DeviceType, softwarePackage.SupportedModels, softwarePackage.BlobDescription);
             return base.Content(HttpStatusCode.OK, true, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]

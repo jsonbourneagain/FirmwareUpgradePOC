@@ -26,7 +26,7 @@ namespace Firmware.Model.Models
 
         public string SwPkgVersion { get; set; }
         public string SwPkgDescription { get; set; }
-        public List<string> Models { get; set; }
+        public List<string> SupportedModels { get; set; }
         public string DeviceType { get; set; }
         public string Manufacturer { get; set; }
     }
