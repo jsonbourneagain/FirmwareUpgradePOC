@@ -1,5 +1,5 @@
-create type PkgUidList AS Table(
-	PkgUid Uniqueidentifier
+CREATE TYPE PkgUidList AS TABLE(
+	PkgUid UNIQUEIDENTIFIER
 );
 go
 
@@ -18,7 +18,7 @@ AS BEGIN
 			END
 		ELSE
 			BEGIN
-			UPDATE Inventory.SoftwarePackage SET IsDeleted =1 WHERE SoftwarePackage.SwPkgUID IN (select * from @PackageIds);
+			UPDATE Inventory.SoftwarePackage SET IsDeleted =1 WHERE SoftwarePackage.SwPkgUID IN (SELECT * FROM @PackageIds);
 			END
 		COMMIT
 END
