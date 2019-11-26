@@ -61,7 +61,8 @@ namespace Firmware.DAL.DataOperations
                                 SwAddedDate = Convert.ToDateTime(reader["AddedDate"]),
                                 SwFileName = reader["FileName"].ToString(),
                                 SwFileSize = String.IsNullOrEmpty(reader["FileSize"].ToString()) ? 0 : (Convert.ToInt64(reader["FileSize"]) / 1024f) / 1024f,
-                                CameraModels = new List<CameraModelName> { new CameraModelName { ModelName = "ABCD" }, new CameraModelName { ModelName = "EFGH" } }
+                                Manufacturer = reader["Manufacturer"].ToString(),
+                                DeviceType = reader["DeviceType"].ToString()
                             }
                             );
                         }
@@ -73,7 +74,6 @@ namespace Firmware.DAL.DataOperations
                         }
 
                         reader.NextResult();
-
                         Dictionary<Guid, string> keyValuePairs = new Dictionary<Guid, string>();
                         while (reader.Read())
                         {
@@ -85,6 +85,30 @@ namespace Firmware.DAL.DataOperations
                             {
                                 i.HelpDocFileName = keyValuePairs[i.SwPkgUID];
                                 i.TotalRecords = totalRecs;
+                            }
+                        });
+
+                        reader.NextResult();
+                        Dictionary<Guid, List<CameraModelName>> swModelMap = new Dictionary<Guid, List<CameraModelName>>();
+                        while (reader.Read())
+                        {
+                            var key = new Guid(reader["SwPkgUID"].ToString());
+                            var value = reader["DeviceModelName"].ToString();
+
+                            if (swModelMap.ContainsKey(key))
+                            {
+                                swModelMap[key].Add(new CameraModelName { ModelName = value });
+                            }
+                            else
+                            {
+                                swModelMap.Add(key, new List<CameraModelName> { new CameraModelName { ModelName = value } });
+                            }
+                        }
+                        inventory.ForEach(i =>
+                        {
+                            if (swModelMap.ContainsKey(i.SwPkgUID))
+                            {
+                                i.CameraModels = swModelMap[i.SwPkgUID];
                             }
                         });
                     }

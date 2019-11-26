@@ -15,5 +15,7 @@ namespace Firmware.DAL.Models
         public string HelpDocFileName { get; set; }
         public List<CameraModelName> CameraModels { get; set; } = new List<CameraModelName>();
         public int TotalRecords { get; set; }
+        public string Manufacturer { get; set; }
+        public string DeviceType { get; set; }
     }
 }

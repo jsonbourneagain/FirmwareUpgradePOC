@@ -5,7 +5,7 @@ AS BEGIN
 	SET XACT_ABORT ON
 
 	
-	SELECT SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, FD.FileName, FD.FileSize, FD.FileFormat
+	SELECT SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, SWPKG.Manufacturer, SWPKG.DeviceType ,FD.FileName, FD.FileSize, FD.FileFormat
 	  FROM Inventory.SoftwarePackage AS SWPKG
 	  INNER JOIN 
 	  Inventory.FileDetails AS FD 
@@ -28,5 +28,11 @@ AS BEGIN
 	  Inventory.FileDetails AS FD 
 	  ON SWPKG.SwPkgUID = FD.SwPkgUID 
 	  WHERE FD.FileFormat = 'pdf'
+
+	  SELECT SM.SwPkgUID, SM.DeviceModelName FROM Inventory.SwPackageModelMap SM
+	  INNER JOIN
+	  Inventory.SoftwarePackage SP
+	  ON
+	  SM.SwPkgUID = SP.SwPkgUID
 
 END

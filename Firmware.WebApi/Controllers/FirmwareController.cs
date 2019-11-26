@@ -80,7 +80,8 @@ namespace Firmware.WebApi.Controllers
         {
             var key = softwarePackage.Key.Trim('\"');
 
-            var result = _repository.AddFirmware(key, softwarePackage.SwPkgVersion, softwarePackage.SwPkgDescription, softwarePackage.SwColorStandardID, softwarePackage.SwFileChecksum, softwarePackage.SwFileChecksumType, softwarePackage.SwCreatedBy, softwarePackage.Manufacturer, softwarePackage.DeviceType, softwarePackage.SupportedModels, softwarePackage.BlobDescription);
+            var result = await Task.Run(() => _repository.AddFirmware(key, softwarePackage.SwPkgVersion, softwarePackage.SwPkgDescription, softwarePackage.SwColorStandardID, softwarePackage.SwFileChecksum, softwarePackage.SwFileChecksumType, softwarePackage.SwCreatedBy, softwarePackage.Manufacturer, softwarePackage.DeviceType, softwarePackage.SupportedModels, softwarePackage.BlobDescription));
+
             return base.Content(HttpStatusCode.OK, true, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -89,14 +90,16 @@ namespace Firmware.WebApi.Controllers
         {
             key = key.Trim('\"');
 
-            var result = _repository.DeleteSwPackageFromMemory(key);
+            var result = await Task.Run(() => _repository.DeleteSwPackageFromMemory(key));
+
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet, Route("api/GetAllSoftwarePackage")]
         public async Task<IHttpActionResult> GetAllSoftwarePackage(int pageNo, int pageSize)
         {
-            var result = _repository.GetAllSoftwarePackage(pageNo, pageSize);
+            var result = await Task.Run(() => _repository.GetAllSoftwarePackage(pageNo, pageSize));
+
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
