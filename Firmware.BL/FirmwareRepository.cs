@@ -66,5 +66,6 @@ namespace Firmware.BL
 
         public byte[] GetHelpDoc(string key) => _dataOperations.GetHelpDoc(new Guid(key));
 
+        public List<string> GetCameraModels() => _dataOperations.GetCameraModels();
     }
 }

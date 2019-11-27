@@ -256,7 +256,28 @@ namespace Firmware.DAL.DataOperations
             {
                 return helpDoc;
             }
+            finally { CloseConnection(); }
             return helpDoc;
+        }
+        public List<string> GetCameraModels()
+        {
+            List<string> cameraModels = new List<string>();
+
+            try
+            {
+                OpenConnection();
+
+                //using (SqlCommand command = new SqlCommand("Inventory.usp_GetModels", _sqlConnection))
+                //{
+
+                //}
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
+            finally { CloseConnection(); }
+            return cameraModels;
         }
         private DataTable GetDataTableFromList(List<Guid> guids)
         {

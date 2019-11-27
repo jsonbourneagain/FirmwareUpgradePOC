@@ -131,6 +131,8 @@ namespace Firmware.WebApi.Controllers
         public async Task<IHttpActionResult> GetModels()
         {
             List<string> models = new List<string> { "Model1", "Model2", "Model3" };
+
+            var result = await Task.Run(() => _repository.GetCameraModels());
             return base.Content(HttpStatusCode.OK, models, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
 

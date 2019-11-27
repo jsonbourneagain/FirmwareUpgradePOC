@@ -12,5 +12,6 @@ namespace Firmware.IBL
         bool DeleteSwPackageFromMemory(string key);
         bool DeleteSoftwarePackage(List<Guid> packageIds, bool deleteAll);
         byte[] GetHelpDoc(string key);
+        List<string> GetCameraModels();
     }
 }
