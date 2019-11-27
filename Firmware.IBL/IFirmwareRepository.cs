@@ -11,5 +11,6 @@ namespace Firmware.IBL
         bool AddFirmware(string key, string SwPkgVersion, string SwPkgDescription, int SwColorStandardID, string SwFileChecksum, string SwFileChecksumType, string SwCreatedBy, string SwManufacturer, string SwDeviceType, List<string> SupportedModels , string BlobDescription);
         bool DeleteSwPackageFromMemory(string key);
         bool DeleteSoftwarePackage(List<Guid> packageIds, bool deleteAll);
+        byte[] GetHelpDoc(string key);
     }
 }

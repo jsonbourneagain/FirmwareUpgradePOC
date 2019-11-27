@@ -133,5 +133,15 @@ namespace Firmware.WebApi.Controllers
             List<string> models = new List<string> { "Model1", "Model2", "Model3" };
             return base.Content(HttpStatusCode.OK, models, new JsonMediaTypeFormatter(), "text/plain"); ;
         }
+
+        [EnableCors(origins: "*", headers: "*", methods: "*")]
+        [HttpGet, Route("api/GetHelpDoc")]
+        public async Task<IHttpActionResult> GetHelpDoc(string key)
+        {
+            key = key.Trim('\"');
+            var result = await Task.Run(() => _repository.GetHelpDoc(key));
+
+            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "application/octet-stream"); ;
+        }
     }
 }

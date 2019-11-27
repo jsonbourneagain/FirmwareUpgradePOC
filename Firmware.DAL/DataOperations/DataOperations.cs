@@ -116,9 +116,8 @@ namespace Firmware.DAL.DataOperations
 
                 return inventory;
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-
                 throw;
             }
             finally
@@ -230,6 +229,34 @@ namespace Firmware.DAL.DataOperations
             {
                 CloseConnection();
             }
+        }
+        public byte[] GetHelpDoc(Guid key)
+        {
+            byte[] helpDoc = null;
+
+            try
+            {
+                OpenConnection();
+
+                using (SqlCommand command = new SqlCommand("Inventory.GetHelpDoc", _sqlConnection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@Key", SqlDbType = SqlDbType.UniqueIdentifier, Value = key });
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            helpDoc = reader["HelpDoc"] as byte[];
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                return helpDoc;
+            }
+            return helpDoc;
         }
         private DataTable GetDataTableFromList(List<Guid> guids)
         {

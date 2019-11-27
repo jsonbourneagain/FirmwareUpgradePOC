@@ -37,7 +37,7 @@ namespace Firmware.BL
         {
             PackageFile package = FirmwareCache.AddOrGetFirmware(key, new PackageFile()) as PackageFile;
 
-            return _dataOperations.AddSoftwarePackage(package?.SoftwarePakage, package?.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, package?.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, "Honeywell", "Camera", SupportedModels,  BlobDescription,
+            return _dataOperations.AddSoftwarePackage(package?.SoftwarePakage, package?.HelpDocument, SwPkgVersion, SwPkgDescription, SwColorStandardID, package?.SoftwarePackageFileName, "bin", package.SoftwarePakage.LongLength, null, SwFileChecksum, SwFileChecksumType, SwCreatedBy, "Honeywell", "Camera", SupportedModels, BlobDescription,
                package?.HelpDocumentFileName, "pdf", package?.HelpDocument?.Length);
         }
 
@@ -63,5 +63,8 @@ namespace Firmware.BL
             bool result = _dataOperations.DeleteSoftwarePackage(packageIds, deleteAll);
             return result;
         }
+
+        public byte[] GetHelpDoc(string key) => _dataOperations.GetHelpDoc(new Guid(key));
+
     }
 }

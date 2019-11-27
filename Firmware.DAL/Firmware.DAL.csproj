@@ -70,6 +70,7 @@
     <Content Include="Scripts\sp_AddSoftwarePackage.sql" />
     <Content Include="Scripts\sp_DeleteFirmware.sql" />
     <Content Include="Scripts\sp_GetAllSoftwarePackages.sql" />
+    <Content Include="Scripts\sp_GetHelpDoc.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
