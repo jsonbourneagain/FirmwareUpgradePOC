@@ -1,9 +1,9 @@
-CREATE TYPE PkgUidList AS TABLE(
+CREATE TYPE Inventory.PkgUidList AS TABLE(
 	PkgUid UNIQUEIDENTIFIER
 );
 go
 
-CREATE PROCEDURE Inventory.usp_DeleteFirmware(@PackageIds as PkgUidList Readonly , @DeleteAll TINYINT)
+CREATE PROCEDURE Inventory.usp_DeleteFirmware(@PackageIds as Inventory.PkgUidList Readonly , @DeleteAll TINYINT)
 	
 AS BEGIN
 	SET NOCOUNT ON
