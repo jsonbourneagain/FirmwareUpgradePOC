@@ -110,7 +110,8 @@ namespace Firmware.WebApi.Controllers
 
             if (swPackageModel != null)
             {
-                result = await Task.Run(() => _repository.DeleteSoftwarePackage(swPackageModel.PackageIds, swPackageModel.DeleteAll));
+
+                result = await Task.Run(() => _repository.DeleteSoftwarePackage(swPackageModel.DeleteAll ? swPackageModel.PackageIds : new List<Guid> { Guid.Empty }, swPackageModel.DeleteAll));
                 if (result)
                 {
                     return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain");
