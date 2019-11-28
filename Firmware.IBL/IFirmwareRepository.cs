@@ -1,4 +1,5 @@
 ﻿using Firmware.DAL.Models;
+using Firmware.Model.Models;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +13,6 @@ namespace Firmware.IBL
         bool DeleteSwPackageFromMemory(string key);
         bool DeleteSoftwarePackage(List<Guid> packageIds, bool deleteAll);
         byte[] GetHelpDoc(string key);
-        List<string> GetCameraModels();
+        List<CameraMakeModel> GetCameraModels();
     }
 }

@@ -259,25 +259,35 @@ namespace Firmware.DAL.DataOperations
             finally { CloseConnection(); }
             return helpDoc;
         }
-        public List<string> GetCameraModels()
+        public List<CameraMakeModel> GetCameraModels()
         {
-            List<string> cameraModels = new List<string>();
+            List<CameraMakeModel> cameraMakeModels = new List<CameraMakeModel>();
 
             try
             {
                 OpenConnection();
 
-                //using (SqlCommand command = new SqlCommand("Inventory.usp_GetModels", _sqlConnection))
-                //{
-
-                //}
+                using (SqlCommand command = new SqlCommand("Inventory.usp_GetModels", _sqlConnection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            cameraMakeModels.Add(new CameraMakeModel
+                            {
+                                CamMake = reader["CAM_MAKE"] != null ? reader["CAM_MAKE"].ToString() : String.Empty,
+                                CamModel = reader["CAM_MODEL"] != null ? reader["CAM_MODEL"].ToString() : String.Empty
+                            });
+                        }
+                    }
+                }
             }
             catch (SqlException ex)
             {
                 throw;
             }
             finally { CloseConnection(); }
-            return cameraModels;
+            return cameraMakeModels;
         }
         private DataTable GetDataTableFromList(List<Guid> guids)
         {

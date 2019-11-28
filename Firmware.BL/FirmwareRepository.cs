@@ -1,6 +1,7 @@
 ﻿using Firmware.DAL.DataOperations;
 using Firmware.DAL.Models;
 using Firmware.IBL;
+using Firmware.Model.Models;
 using System;
 using System.Collections.Generic;
 
@@ -66,6 +67,6 @@ namespace Firmware.BL
 
         public byte[] GetHelpDoc(string key) => _dataOperations.GetHelpDoc(new Guid(key));
 
-        public List<string> GetCameraModels() => _dataOperations.GetCameraModels();
+        public List<CameraMakeModel> GetCameraModels() => _dataOperations.GetCameraModels();
     }
 }

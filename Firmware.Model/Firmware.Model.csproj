@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\CameraMakeModel.cs" />
     <Compile Include="Models\CameraModelName.cs" />
     <Compile Include="Models\SoftwarePackage.cs" />
     <Compile Include="Models\SoftwarePackageAdd.cs" />
