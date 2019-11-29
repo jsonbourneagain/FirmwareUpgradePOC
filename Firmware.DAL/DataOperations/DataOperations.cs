@@ -267,7 +267,7 @@ namespace Firmware.DAL.DataOperations
             {
                 OpenConnection();
 
-                using (SqlCommand command = new SqlCommand("Inventory.usp_GetModels", _sqlConnection))
+                using (SqlCommand command = new SqlCommand("Inventory.usp_GetCameraModels", _sqlConnection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
