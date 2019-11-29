@@ -104,9 +104,9 @@ namespace Firmware.WebApi.Controllers
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet, Route("api/GetAllSoftwarePackage")]
-        public async Task<IHttpActionResult> GetAllSoftwarePackage(int pageNo, int pageSize)
+        public async Task<IHttpActionResult> GetAllSoftwarePackage(int pageNo, int pageSize, string searchText, string sortColumn, string sortDirection)
         {
-            var result = await Task.Run(() => _repository.GetAllSoftwarePackage(pageNo, pageSize));
+            var result = await Task.Run(() => _repository.GetAllSoftwarePackage(pageNo, pageSize, searchText, sortColumn, sortDirection));
 
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
         }

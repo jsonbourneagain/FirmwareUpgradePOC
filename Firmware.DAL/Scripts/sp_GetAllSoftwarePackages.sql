@@ -13,7 +13,7 @@ AS BEGIN
 	  ORDER BY 
 		CASE 
 			 WHEN @SortDirection <> 'ASC' THEN '' 
-			 WHEN @SortColumn =  'FILE NAME' THEN FD.FileName 
+			 WHEN @SortColumn =  'FILENAME' THEN FD.FileName 
 		END ASC,
 		CASE
 			 WHEN @SortDirection <> 'ASC' THEN ''
@@ -37,12 +37,12 @@ AS BEGIN
 		END ASC,
 		CASE
 			 WHEN @SortDirection <> 'ASC' THEN CAST(NULL AS DATE)
-			 WHEN @SortColumn =  'DATE ADDED' THEN SWPKG.AddedDate
+			 WHEN @SortColumn =  'DATEADDED' THEN SWPKG.AddedDate
 		END	 ASC,
 		
 		CASE 
 			 WHEN @SortDirection <> 'DESC' THEN '' 
-			 WHEN @SortColumn =  'FILE NAME' THEN FD.FileName 
+			 WHEN @SortColumn =  'FILENAME' THEN FD.FileName 
 		END DESC,
 		CASE
 			 WHEN @SortDirection <> 'DESC' THEN ''
@@ -66,7 +66,10 @@ AS BEGIN
 		END ASC,
 		CASE
 			 WHEN @SortDirection <> 'DESC' THEN CAST(NULL AS DATE)
-			 WHEN @SortColumn =  'DATE ADDED' THEN SWPKG.AddedDate
+			 WHEN @SortColumn =  'DATEADDED' THEN SWPKG.AddedDate
+		END	 DESC,
+		CASE
+			 WHEN @SortColumn =  'DEFAULT' THEN SWPKG.AddedDate
 		END	 DESC
 
 

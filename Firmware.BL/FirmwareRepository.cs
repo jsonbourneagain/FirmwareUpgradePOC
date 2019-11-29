@@ -54,9 +54,9 @@ namespace Firmware.BL
                 return false;
             }
         }
-        public IEnumerable<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize)
+        public IEnumerable<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize, string searchText, string sortColumn, string sortDirection)
         {
-            return _dataOperations.GetAllSoftwarePackage(pageNo, pageSize);
+            return _dataOperations.GetAllSoftwarePackage(pageNo, pageSize, searchText != null ? searchText : string.Empty, sortColumn != null ? sortColumn : "DEFAULT", sortDirection != null ? sortDirection : string.Empty);
         }
 
         public bool DeleteSoftwarePackage(List<Guid> packageIds, bool deleteAll)

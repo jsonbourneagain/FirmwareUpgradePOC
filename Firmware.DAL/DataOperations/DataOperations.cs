@@ -28,7 +28,7 @@ namespace Firmware.DAL.DataOperations
                 _sqlConnection?.Close();
             }
         }
-        public List<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize)
+        public List<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize, string searchText , string sortColumn , string sortDirection )
         {
             try
             {
@@ -42,6 +42,10 @@ namespace Firmware.DAL.DataOperations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter { ParameterName = "@PageNo", SqlDbType = SqlDbType.Int, Value = pageNo });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@PageSize", SqlDbType = SqlDbType.Int, Value = pageSize });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SearchText", SqlDbType = SqlDbType.VarChar, Value = searchText});
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SortColumn", SqlDbType = SqlDbType.VarChar, Value = sortColumn.ToUpper()});
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SortDirection", SqlDbType = SqlDbType.VarChar, Value = sortDirection.ToUpper()});
+
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
