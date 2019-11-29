@@ -6,10 +6,16 @@ AS BEGIN
 
 	SELECT SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, SWPKG.Manufacturer, SWPKG.DeviceType ,FD.FileName, FD.FileSize, FD.FileFormat
 	  FROM Inventory.SoftwarePackage AS SWPKG
-	  INNER JOIN 
-	  Inventory.FileDetails AS FD 
+	  INNER JOIN Inventory.FileDetails AS FD 
 	  ON SWPKG.SwPkgUID = FD.SwPkgUID
-	  WHERE FD.FileFormat = 'bin' AND SWPKG.IsDeleted = 0 AND( FD.FileName LIKE '%' +@SearchText + '%')
+
+	  INNER JOIN Inventory.SwPackageModelMap SM
+	  ON SM.SwPkgUID = SWPKG.SwPkgUID
+
+	  WHERE FD.FileFormat = 'bin' AND SWPKG.IsDeleted = 0 AND ( FD.FileName LIKE '%' +@SearchText + '%'
+	  OR SM.DeviceModelName LIKE '%' +@SearchText+ '%')
+
+	  GROUP BY SWPKG.SwPkgUID , SWPKG.SwPkgVersion, SWPKG.SwColorStandardID, SWPKG.AddedDate, SWPKG.Manufacturer, SWPKG.DeviceType ,FD.FileName, FD.FileSize, FD.FileFormat
 	  ORDER BY 
 		CASE 
 			 WHEN @SortDirection <> 'ASC' THEN '' 
@@ -71,7 +77,6 @@ AS BEGIN
 		CASE
 			 WHEN @SortColumn =  'DEFAULT' THEN SWPKG.AddedDate
 		END	 DESC
-
 
 	  --DESC
 	  
