@@ -194,9 +194,17 @@ namespace Firmware.WebApi.Controllers
             if (String.IsNullOrEmpty(key) || Guid.TryParse(key, out _))
                 return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
 
-            var result = await Task.Run(() => _repository.GetHelpDoc(key));
+            try
+            {
+                var result = await Task.Run(() => _repository.GetHelpDoc(key));
 
-            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "application/octet-stream"); ;
+                return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "application/octet-stream");
+            }
+            catch (Exception)
+            {
+                return base.Content(HttpStatusCode.InternalServerError, "Internal Server Error.", new JsonMediaTypeFormatter(), "text/plain");
+            }
+            
         }
     }
 }
