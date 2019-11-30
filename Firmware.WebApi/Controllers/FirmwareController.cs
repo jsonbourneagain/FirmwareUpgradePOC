@@ -78,7 +78,7 @@ namespace Firmware.WebApi.Controllers
             }
             catch (Exception)
             {
-                return base.Content(HttpStatusCode.OK, "Error occurred.", new JsonMediaTypeFormatter(), "text/plain"); ;
+                return base.Content(HttpStatusCode.InternalServerError, "Error occurred.", new JsonMediaTypeFormatter(), "text/plain"); ;
             }
 
         }
@@ -86,11 +86,20 @@ namespace Firmware.WebApi.Controllers
         [HttpPost, Route("api/AddSoftwarePackage")]
         public async Task<IHttpActionResult> AddSoftwarePackage(SoftwarePackageAdd softwarePackage)
         {
-            var key = softwarePackage.Key.Trim('\"');
+            var result = false;
+            try
+            {
+                var key = softwarePackage.Key.Trim('\"');
 
-            var result = await Task.Run(() => _repository.AddFirmware(key, softwarePackage.SwPkgVersion, softwarePackage.SwPkgDescription, softwarePackage.SwColorStandardID, softwarePackage.SwFileChecksum, softwarePackage.SwFileChecksumType, softwarePackage.SwCreatedBy, softwarePackage.Manufacturer, softwarePackage.DeviceType, softwarePackage.SupportedModels, softwarePackage.BlobDescription));
+                result = await Task.Run(() => _repository.AddFirmware(key, softwarePackage.SwPkgVersion, softwarePackage.SwPkgDescription, softwarePackage.SwColorStandardID, softwarePackage.SwFileChecksum, softwarePackage.SwFileChecksumType, softwarePackage.SwCreatedBy, softwarePackage.Manufacturer, softwarePackage.DeviceType, softwarePackage.SupportedModels, softwarePackage.BlobDescription));
 
-            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+                return base.Content(HttpStatusCode.Created, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+            }
+            catch (Exception)
+            {
+                return base.Content(HttpStatusCode.InternalServerError, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+            }
+
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost, Route("api/CancelUpload")]
