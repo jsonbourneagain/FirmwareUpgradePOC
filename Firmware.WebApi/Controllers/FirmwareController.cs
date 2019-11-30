@@ -25,9 +25,13 @@ namespace Firmware.WebApi.Controllers
         [HttpPost, Route("api/UploadSoftwarePackage")]
         public async Task<IHttpActionResult> UploadSoftwarePackage(string guid)
         {
+            var key = guid.Trim('\"');
+
+            if (String.IsNullOrEmpty(key) || Guid.TryParse(key, out _))
+                return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
+
             try
             {
-                string key = guid.Trim('\"');
                 var count = HttpContext.Current.Request.Files.Count;
                 var beforeUpload = GC.GetTotalMemory(false);
                 string id = string.Empty;
@@ -78,7 +82,7 @@ namespace Firmware.WebApi.Controllers
             }
             catch (Exception)
             {
-                return base.Content(HttpStatusCode.InternalServerError, "Error occurred.", new JsonMediaTypeFormatter(), "text/plain"); ;
+                return base.Content(HttpStatusCode.InternalServerError, "Internal Server Error.", new JsonMediaTypeFormatter(), "text/plain");
             }
 
         }
@@ -86,6 +90,9 @@ namespace Firmware.WebApi.Controllers
         [HttpPost, Route("api/AddSoftwarePackage")]
         public async Task<IHttpActionResult> AddSoftwarePackage(SoftwarePackageAdd softwarePackage)
         {
+            if (softwarePackage == null || String.IsNullOrEmpty(softwarePackage.Key) || Guid.TryParse(softwarePackage.Key, out _))
+                return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
+
             var result = false;
             try
             {
@@ -107,17 +114,35 @@ namespace Firmware.WebApi.Controllers
         {
             key = key.Trim('\"');
 
-            var result = await Task.Run(() => _repository.DeleteSwPackageFromMemory(key));
+            if (String.IsNullOrEmpty(key) || Guid.TryParse(key, out _))
+                return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
+            try
+            {
+                var result = await Task.Run(() => _repository.DeleteSwPackageFromMemory(key));
 
-            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+                return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain");
+            }
+            catch (Exception)
+            {
+                return base.Content(HttpStatusCode.InternalServerError, "Internal Server Error.", new JsonMediaTypeFormatter(), "text/plain"); ;
+            }
+
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpGet, Route("api/GetAllSoftwarePackage")]
         public async Task<IHttpActionResult> GetAllSoftwarePackage(int pageNo, int pageSize, string searchText, string sortColumn, string sortDirection)
         {
-            var result = await Task.Run(() => _repository.GetAllSoftwarePackage(pageNo, pageSize, searchText, sortColumn, sortDirection));
+            try
+            {
+                var result = await Task.Run(() => _repository.GetAllSoftwarePackage(pageNo, pageSize, searchText, sortColumn, sortDirection));
 
-            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+                return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain");
+            }
+            catch (Exception)
+            {
+                return base.Content(HttpStatusCode.InternalServerError, "Internal Server Error.", new JsonMediaTypeFormatter(), "text/plain"); ;
+            }
+
         }
         [EnableCors(origins: "*", headers: "*", methods: "*")]
         [HttpPost, Route("api/DeleteSoftwarePackage")]
@@ -148,8 +173,16 @@ namespace Firmware.WebApi.Controllers
         [HttpGet, Route("api/GetModels")]
         public async Task<IHttpActionResult> GetModels()
         {
-            var result = await Task.Run(() => _repository.GetCameraModels());
-            return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain"); ;
+            try
+            {
+                var result = await Task.Run(() => _repository.GetCameraModels());
+                return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "text/plain");
+            }
+            catch (Exception)
+            {
+                return base.Content(HttpStatusCode.InternalServerError, "Internal Server Error.", new JsonMediaTypeFormatter(), "text/plain");
+            }
+
         }
 
         [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -157,6 +190,10 @@ namespace Firmware.WebApi.Controllers
         public async Task<IHttpActionResult> GetHelpDoc(string key)
         {
             key = key.Trim('\"');
+
+            if (String.IsNullOrEmpty(key) || Guid.TryParse(key, out _))
+                return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
+
             var result = await Task.Run(() => _repository.GetHelpDoc(key));
 
             return base.Content(HttpStatusCode.OK, result, new JsonMediaTypeFormatter(), "application/octet-stream"); ;
