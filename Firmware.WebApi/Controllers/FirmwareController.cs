@@ -27,7 +27,7 @@ namespace Firmware.WebApi.Controllers
         {
             var key = guid.Trim('\"');
 
-            if (String.IsNullOrEmpty(key) || Guid.TryParse(key, out _))
+            if (String.IsNullOrEmpty(key) || !Guid.TryParse(key, out _))
                 return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
 
             try
