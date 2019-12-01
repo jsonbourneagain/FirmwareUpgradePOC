@@ -90,7 +90,7 @@ namespace Firmware.WebApi.Controllers
         [HttpPost, Route("api/AddSoftwarePackage")]
         public async Task<IHttpActionResult> AddSoftwarePackage(SoftwarePackageAdd softwarePackage)
         {
-            if (softwarePackage == null || String.IsNullOrEmpty(softwarePackage.Key) || Guid.TryParse(softwarePackage.Key, out _))
+            if (softwarePackage == null || String.IsNullOrEmpty(softwarePackage.Key) || !Guid.TryParse(softwarePackage.Key, out _))
                 return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
 
             var result = false;
@@ -114,7 +114,7 @@ namespace Firmware.WebApi.Controllers
         {
             key = key.Trim('\"');
 
-            if (String.IsNullOrEmpty(key) || Guid.TryParse(key, out _))
+            if (String.IsNullOrEmpty(key) || !Guid.TryParse(key, out _))
                 return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
             try
             {
@@ -191,7 +191,7 @@ namespace Firmware.WebApi.Controllers
         {
             key = key.Trim('\"');
 
-            if (String.IsNullOrEmpty(key) || Guid.TryParse(key, out _))
+            if (String.IsNullOrEmpty(key) || !Guid.TryParse(key, out _))
                 return base.Content(HttpStatusCode.BadRequest, "Bad request.", new JsonMediaTypeFormatter(), "text/plain");
 
             try
