@@ -140,7 +140,7 @@ namespace Firmware.WebApi.Controllers
             }
             catch (Exception)
             {
-                return base.Content(HttpStatusCode.InternalServerError, "Internal Server Error.", new JsonMediaTypeFormatter(), "text/plain"); ;
+                return base.Content(HttpStatusCode.InternalServerError, "Internal Server Error.", new JsonMediaTypeFormatter(), "text/plain");
             }
 
         }

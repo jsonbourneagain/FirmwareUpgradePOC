@@ -79,7 +79,7 @@ CREATE TABLE [Inventory].[FileDetails] (
     [ParentDirectory]  NVARCHAR (300)   NULL,
     [FileName]         NVARCHAR (200)   NOT NULL,
     [FileFormat]       NVARCHAR (30)    NOT NULL,
-    [FileSize]         VARCHAR (30)     NOT NULL,
+    [FileSize]         BIGINT           NOT NULL,
     [FileURL]          NVARCHAR (512)   NULL,
     [FileUploadDate]   DATETIME2 (3)    NULL,
     [FileChecksum]     VARCHAR (120)    NULL,

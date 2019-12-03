@@ -69,7 +69,7 @@ AS BEGIN
 		CASE
 			 WHEN @SortDirection <> 'DESC' THEN ''
 			 WHEN @SortColumn =  'SIZE' THEN FD.FileSize
-		END ASC,
+		END DESC,
 		CASE
 			 WHEN @SortDirection <> 'DESC' THEN CAST(NULL AS DATE)
 			 WHEN @SortColumn =  'DATEADDED' THEN SWPKG.AddedDate
