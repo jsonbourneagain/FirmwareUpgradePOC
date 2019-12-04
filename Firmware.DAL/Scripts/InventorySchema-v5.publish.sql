@@ -175,15 +175,17 @@ INSERT INTO [Inventory].[SwColorStandard]
      VALUES
            ('NTSC')
 
+ INSERT INTO [Inventory].[SwColorStandard]
+           ([SwColorStandardName])
+     VALUES
+           ('NTSC & PAL')
+
 INSERT INTO [Inventory].[SwColorStandard]
            ([SwColorStandardName])
      VALUES
            ('PAL')
 
-INSERT INTO [Inventory].[SwColorStandard]
-           ([SwColorStandardName])
-     VALUES
-           ('NTSC & PAL')
+
 
 INSERT INTO [Inventory].[BlobTypes]
            ([BlobTypeUID]

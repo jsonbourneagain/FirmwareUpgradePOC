@@ -28,7 +28,7 @@ namespace Firmware.DAL.DataOperations
                 _sqlConnection?.Close();
             }
         }
-        public List<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize, string searchText , string sortColumn , string sortDirection )
+        public List<SoftwarePackage> GetAllSoftwarePackage(int pageNo, int pageSize, string searchText, string sortColumn, string sortDirection)
         {
             try
             {
@@ -42,9 +42,9 @@ namespace Firmware.DAL.DataOperations
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter { ParameterName = "@PageNo", SqlDbType = SqlDbType.Int, Value = pageNo });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@PageSize", SqlDbType = SqlDbType.Int, Value = pageSize });
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SearchText", SqlDbType = SqlDbType.VarChar, Value = searchText});
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SortColumn", SqlDbType = SqlDbType.VarChar, Value = sortColumn.ToUpper()});
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@SortDirection", SqlDbType = SqlDbType.VarChar, Value = sortDirection.ToUpper()});
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SearchText", SqlDbType = SqlDbType.VarChar, Value = searchText });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SortColumn", SqlDbType = SqlDbType.VarChar, Value = sortColumn.ToUpper() });
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@SortDirection", SqlDbType = SqlDbType.VarChar, Value = sortDirection.ToUpper() });
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -115,6 +115,14 @@ namespace Firmware.DAL.DataOperations
                                 i.CameraModels = swModelMap[i.SwPkgUID];
                             }
                         });
+                        if ("TYPE" == sortColumn.ToUpper() && "ASC" == sortDirection.ToUpper())
+                        {
+                            inventory = inventory.OrderBy(i => i.SwColorStandardID).ToList();
+                        }
+                        if ("TYPE" == sortColumn.ToUpper() && "DESC" == sortDirection.ToUpper())
+                        {
+                            inventory = inventory.OrderByDescending(i => i.SwColorStandardID).ToList();
+                        }
                     }
                 }
 
@@ -190,7 +198,7 @@ namespace Firmware.DAL.DataOperations
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileDetailsUID", SqlDbType = SqlDbType.UniqueIdentifier, Value = Guid.NewGuid() });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileName", SqlDbType = SqlDbType.VarChar, Value = helDocFileName });
                     command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileFormat", SqlDbType = SqlDbType.VarChar, Value = helpDocFileFormat });
-                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileSize", SqlDbType = SqlDbType.BigInt, Value = helpDocFileSize ?? 0});
+                    command.Parameters.Add(new SqlParameter { ParameterName = "@HdFileSize", SqlDbType = SqlDbType.BigInt, Value = helpDocFileSize ?? 0 });
 
 
                     command.ExecuteNonQuery();
