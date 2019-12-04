@@ -88,7 +88,6 @@ namespace Firmware.DAL.DataOperations
                             if (keyValuePairs.ContainsKey(i.SwPkgUID))
                             {
                                 i.HelpDocFileName = keyValuePairs[i.SwPkgUID];
-                                i.TotalRecords = totalRecs;
                             }
                         });
 
@@ -113,6 +112,7 @@ namespace Firmware.DAL.DataOperations
                             if (swModelMap.ContainsKey(i.SwPkgUID))
                             {
                                 i.CameraModels = swModelMap[i.SwPkgUID];
+                                i.TotalRecords = totalRecs;
                             }
                         });
                         if ("TYPE" == sortColumn.ToUpper() && "ASC" == sortDirection.ToUpper())
